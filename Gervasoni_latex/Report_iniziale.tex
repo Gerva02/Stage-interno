@@ -4,8 +4,10 @@
 \usepackage{enumerate}
 \usepackage{hyperref} % per i link
 \usepackage{graphicx}
+\usepackage{tikz} % per i DAG
 
-\title{Bayesian changepoints}
+
+\title{Bayesian causality}
 \author{Simone Gervasoni Maria}
 \date{\today}
 
@@ -19,7 +21,27 @@
 \clearpage
 
 
-fsadf\cite{chib1998estimation}
+\section{Potential Outcome model}
+\label{sect:PotentialOM}
+The potential outcome model 
+\begin{figure}[!h]
+\centering
+	\begin{tikzpicture}
+		\node (x) at (0,2) {$X$};
+    		\node (y) at (1,1) {$Y$};
+    		\node (T) at (2,2) {$T$};
+    		\path[->] (x) edge (y);
+    		\path[<-] (T) edge (x);
+    		\path[->] (T) edge (y);
+	\end{tikzpicture}
+\end{figure}
+
+
+
+
+
+
+
 
 \bibliographystyle{plain}
 \bibliography{bibliografia}
