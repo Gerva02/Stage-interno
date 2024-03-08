@@ -5,6 +5,7 @@
 \usepackage{hyperref} % per i link
 \usepackage{graphicx}
 \usepackage{tikz} % per i DAG
+\usepackage[italian]{babel}
 
 
 \title{Bayesian causality}
@@ -20,21 +21,92 @@
 \tableofcontents
 \clearpage
 
+\section{La storia della causalità}
+\label{sect:History Causality}
+
+Il problema della causalità è di fondamentale interesse per capire meglio il mondo che ci circonda, perciò la domanda è stata affrontata da  filosofi e scienziati. La sua definizione rigorosa nel campo statistico è stata solo affrontata molto recentemente, [proprio perché estremamente vago], da Neyman (1932) e poi sviluppata da Rubin negli anni '70, i quali hanno fatto riferimento al modello dei potential outcome spiegato nel capitolo \ref{sect:PotentialOM}. Questo modello diverge concettualmente da alcune definizioni portate avanti da  filosofi come John Stuart Mill che definisce la causalità come “the antecedent, or the concurrence of antecedents, on which [a given phenomenon] is invariably and unconditionally consequent”, per Mill dunque possiamo dire che A causa B se e solo se ogni volta che succede A succede anche B . Questo modello di causalità è molto riduttivo e ignora la aleatorietà degli eventi, per questo dobbiamo introdurre il potential outcome model. 
+
+% 
 
 \section{Potential Outcome model}
 \label{sect:PotentialOM}
-The potential outcome model 
+Il potential outcome model definisce l'effetto causale di un evento A come la differenza tra i due "stati" del mondo, cioè il mondo dove accade A e il mondo dove non accade A.
+
+Poniamo ad esempio di voler capire se veramente un medicinale possa migliorare il mal di testa. Formalizziamo il problema ponendo X come l'insieme di covariate dei pazienti, D il regime di trattamento (che assume il valore 1 se viene dato il medicinale mentre assume valore 0 quando al paziente viene somministrato il placebo) e $Y^{obs}_i$ come il numero di minuti per cui persiste il mal di testa. 
+Dunque se potessimo conoscere contemporaneamente  $Y^{obs}_i|D=1$ , che chiameremo $Y^{1}_i$, e $Y^{obs}_i|D=0$ , che chiameremo $Y^{0}_i$, allora calcolare se il medicinale causa un miglioramento rispetto ogni paziente risulta banale. Introduciamo un esempio numerico : 
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Age & Sex & $Y^{0}_i$ & $Y^{1}_i$ & $\delta_i$ \\ \hline
+20 & M & 20 & 2 & 18  \\ \hline
+20 & F & 15 & 3 & 12 \\ \hline
+20 & M & 8 & 10 & -2 \\ \hline
+20 & F & 16 & 15 & 1 \\ \hline
+30 & M & 12 & 4 & 8 \\ \hline
+30 & F & 8 & 5 & 3 \\ \hline
+30 & M & 2 & 11 & -9  \\ \hline
+30 & F & 15 & 26 & 11 \\ \hline
+\end{tabular}
+\caption{Tabella esperimento }
+\end{table}
+
+\paragraph{Definizione di parametri} \\
+Definiamo quindi alcune quantità che ci risulteranno utili l'effetto del trattamento: il CATE o conditional average treatment effect è definito come $E[Y^{1}_i- Y^{0}_i|X] = E[\delta_i|X]$, quindi $CATE_{(M,20)}=E[\delta_i|X=(M,20)] \approx \frac{18-2}{2}=8$ , possiamo quindi dire che tra i maschi ventenni la medicina causa in media una riduzione di 8 minuti nella durata del mal di testa .\\ 
+Invece possiamo definire l'ATE o average treatment effect come  $E[Y^{1}_i- Y^{0}_i] = E[\delta_i]$, quindi $ATE= E[\delta_i] \approx \frac{18+12-2+18+3-9+11}{8}$. 
+
+Ovviamente questa tabella non potrà mai essere riempita come abbiamo mostrato sopra perchè possiamo veramente conoscere una sola quantità tra $Y^0_{i}$ e $Y^1_{i}$, quindi sarà impossibile avere certezza sulle quantità definite prima, bisognerà quindi stimarle. per questo è utile fare la distinzione tra i valori "fattuali" cioè cosa è veramente successo e "controfattuale" .
+Possiamo capire meglio la relazione tra potential outcome e observed outcome attraverso la  "switching equation": 
+\begin{equation}
+Y_i^{obs} = D_i \cdot Y^1_i + (1-D_i) \cdot Y^0_i
+\label{eq:switching}
+\end{equation}
+Vediamo quidi che $Y_i^{obs} = $
+
+
+
+\subsection{Esempio}
+Poniamo ad esempio di voler capire se veramente un medicinale possa migliorare il mal di testa, prendiamo quindi $n$ pazienti e somministriamo casualmente il trattamento. Formalizziamo il problema ponendo X come l'insieme di covariate dei pazienti, T il regime di trattamento (che assume il valore 1 se viene dato il trattamento mentre assume valore 0 altrimenti) e $Y^{obs}$ come il numero di minuti per cui persiste il mal di testa. Possiamo quindi rappresentare così la situazione:
+
 \begin{figure}[!h]
 \centering
 	\begin{tikzpicture}
 		\node (x) at (0,2) {$X$};
-    		\node (y) at (1,1) {$Y$};
+    		\node (y) at (1,1) {$Y^{obs}$};
     		\node (T) at (2,2) {$T$};
     		\path[->] (x) edge (y);
-    		\path[<-] (T) edge (x);
+    		%\path[<-] (T) edge (x);
     		\path[->] (T) edge (y);
 	\end{tikzpicture}
+\caption{Dag per esperimento randomizzato}
+\label{fig:dag_random_EX}
 \end{figure}
+
+Il risultato dell'esperimento fornirà dati in forma simile : 
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+Age & Sex & T & $Y^{obs}$\\ \hline
+20 & M & 1 & 2  \\ \hline
+20 & F & 1 & 3 \\ \hline
+20 & M & 0 & 10  \\ \hline
+20 & F & 0 & 15 \\ \hline
+30 & M & 1 & 4  \\ \hline
+30 & F & 1 & 5 \\ \hline
+30 & M & 0 & 11  \\ \hline
+30 & F & 0 & 26 \\ \hline
+\end{tabular}
+\caption{Tabella esperimento }
+\end{table}
+
+
+
+
+
+\subsection{Ruolo della randomizzazione}
+
+
 
 
 
