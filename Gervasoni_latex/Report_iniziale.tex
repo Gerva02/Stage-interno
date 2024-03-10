@@ -74,7 +74,7 @@ Y_i^{obs} = D_i \cdot Y^1_i + (1-D_i) \cdot Y^0_i
 \label{eq:switching}
 \end{equation}
 Vediamo quindi che $Y_i^{obs} = Y^1_i$ quando $D_i =1$ ,mentre $Y_i^{obs} = Y^0_i$ quando $D_i = 0$. 
-Bisogna precisare che la differenza tra $Y_i^{obs}$ e $Y^0_i,Y^1_i$ è che i primi sono valori effettivi, empirici che si possono osservare mentre gli ultimi sono valori ex-ante, empirici che esistono prima che la $D_i$ venga somministrata.
+Bisogna precisare che la differenza tra $Y_i^{obs}$ e $Y^0_i,Y^1_i$ è che i primi sono valori effettivi, empirici che si possono osservare mentre gli ultimi sono valori ex-ante e dunque esistono prima che la $D_i$ venga somministrata.
 
 Quello che invece ci ritroveremo nella realtà sarà una tabella più simile a questa 
 \begin{table}[H]
@@ -96,9 +96,8 @@ Age & Sex & $Y^{0}_i$ & $Y^{1}_i$ \\ \hline
 Abbiamo dunque ridotto il problema della causalità ad un problema di \textit{Missing Data}, questa è la forza del modello usato
 
 \subsection{Studi randomizzati: Ruolo della randomizzazione}
-Spesso si sente parlare di studi clinici randomizzati controllati, cioè studi in cui a metà dei partecipanti viene dato un placebo e all'altra metà il medicinale che è oggetto di studio, la situazione può essere espressa con un DAG in questa maniera: 
-
-\begin{figure}[!h]
+Spesso si sente parlare di studi clinici randomizzati controllati, cioè studi in cui a metà dei partecipanti viene dato un placebo e all'altra metà il medicinale che è oggetto di studio, ovviamente né i medici né i pazienti sono a conoscenza di quali persone hanno assunto una o l'altra cosa. La situazione può essere espressa con un DAG in questa maniera: 
+\begin{figure}[H]
 \centering
 	\begin{tikzpicture}
 		\node (x) at (0,1) {$X$};
@@ -115,18 +114,31 @@ Spesso si sente parlare di studi clinici randomizzati controllati, cioè studi i
 \caption{Dag per studio randomizzato}
 \label{fig:dag_random_EX}
 \end{figure}
-
-Sotto il potential outcome model questo procedimento può essere formalizzato tramite questa indipendenza
+Ma perché questo procedimento è ormai la norma per verificare l'efficacia di un farmaco? E cosa ci può dire veramente un esperimento del genere? Sotto il potential outcome model questo procedimento può essere formalizzato tramite questa indipendenza
 \begin{equation}
 D \perp\!\!\!\perp (Y^{0},Y^{1})
-\label{eq:indipendence}
+\label{eq:indipendence_r}
 \end{equation}
-ciò significa che il trattamento non è amministrato in base agli potential outcome, ma a caso. Non bisogna però confondersi e pensare che ciò implica che  $D \perp\!\!\!\perp Y^{obs})$, infatti noi speriamo che il nostro trattamento abbia un effetto su $Y^{obs}$.
-Grazie alla equazione \ref{eq:indipendence} abbiamo che $E[Y^1_i] = E[Y^{1}_i | D_i = 1]$ e la stessa cosa per $E[Y^0_i] = E[Y^{0}_i | D_i = 0]$, grazie alla equazione \ref{eq:switching} sappiamo che entrambe le quantità sono \textit{fattuali} e dunque si possono stimare tutti i parametri del paragrafo \ref{parag:param}, è da notare che in questo contesto $ATE = ATT = ATU$.
+ciò significa che il trattamento non è amministrato in base agli potential outcome, ma a caso. Non bisogna però confondersi e pensare che ciò implichi che $D \perp\!\!\!\perp Y^{obs}$, infatti ciò è espressamente falso ogni volta che il medicinale ha effetto su infatti noi speriamo che il nostro trattamento abbia un effetto su $Y^{obs}$.
+Grazie alla equazione \ref{eq:indipendence_r} abbiamo che $E[Y^1_i] = E[Y^{1}_i | D_i = 1]  $ e la stessa cosa per $E[Y^0_i] = E[Y^{0}_i | D_i = 0] $.
+Possiamo quindi dire che :
+\begin{align}
+ATE &= E[Y^1_i-Y^0_i ] \\ 
+ &= E[Y^{1}_i | D_i = 1]- E[Y^{0}_i | D_i = 0]\label{eq:ATE_R} \\
+	& =E[Y^{1}_i | D_i = 1]- E[Y^{0}_i | D_i = 1] \label{eq:ATT_R} \\
+ &= E[Y^{1}_i | D_i = 0]- E[Y^{0}_i | D_i = 0] \label{eq:ATU_R}
+  \end{align}
+
+Nell'equazione \ref{eq:ATE_R} entrambi gli addenti sono quantità \textit{fattuali}, grazie alla legge dei grandi numeri stimiamo queste quantità con delle semplici medie, chiameremo quindi SDO la semplice differenza delle media osservate per i gruppi:
+$$SDO = \frac{1}{N_1}\sum_i(y_i|d_i=1) - \frac{1}{N_2}\sum_i(y_i|d_i=0) \overset{\underset{\mathrm{(N_1, N_2) \rightarrow \infty}}{}}{=} ATE$$
+
+Dalla equazione \ref{eq:ATT_R} e \ref{eq:ATU_R} possiamo concludere che nel caso randomizzato avremo che $ATE = ATT = ATU$.
+
+
 \subsection{Studi osservazionali}
 Gli studi osservazionali (?) sono invece strutturati in modo diverso, i ricercatori osservano e raccolgono dati su individui o gruppi senza intervenire o manipolare alcun aspetto dell'ambiente di studio, per 2 motivi principali
 \begin{enumerate}
-\item Potrebbe essere non etico, dividere la popolazione in maniera casuale (immaginiamo di volere studiare se fumare causa un aumento nel rischio del cancro)
+\item Potrebbe essere non etico o pratico, dividere la popolazione in maniera casuale (immaginiamo di volere studiare se fumare causa un aumento nel rischio del cancro)
 \item Gli eventi sono già accaduti (immaginiamo studio su come i tassi di interesse influenzino il consumo)
 \end{enumerate}
 
@@ -151,8 +163,13 @@ Dunque la cosa principale che cambia dal caso precedente è che $D \not \perp\!\
 \label{fig:dag_OBS}
 \end{figure}
 
+
 Una possibile soluzione è stata proposta da Rubin con il propensity score matching .
 
+
+\subsection{Assunzioni di fondo}
+\subsubsection{SUTVA}
+\subsubsection{Ignorabilità}
 
 
 
