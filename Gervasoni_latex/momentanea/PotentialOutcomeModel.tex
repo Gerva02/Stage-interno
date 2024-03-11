@@ -1,35 +1,5 @@
-\documentclass{article}
-\usepackage{amsmath, amssymb, amsfonts}
-\usepackage{float}
-\usepackage{enumerate}
-\usepackage{hyperref} % per i link
-\usepackage{graphicx}
-\usepackage{tikz} % per i DAG
-\usepackage[italian]{babel}
-
-
-\title{Bayesian causality}
-\author{Simone Gervasoni Maria}
-\date{\today}
-
-\begin{document}
-\thispagestyle{empty}
-\maketitle
-\pagebreak
- 
-\thispagestyle{empty}
-\tableofcontents
-\clearpage
-
-\section{La storia della causalità}
-\label{sect:History Causality}
-
-Il problema della causalità è di fondamentale interesse per capire meglio il mondo che ci circonda, perciò la domanda è stata affrontata da  filosofi e scienziati. La sua definizione rigorosa nel campo statistico è stata solo affrontata molto recentemente, [proprio perché estremamente vago], da Neyman (1932) e poi sviluppata da Rubin negli anni '70, i quali hanno fatto riferimento al modello dei potential outcome spiegato nel capitolo \ref{sect:PotentialOM}. Questo modello diverge concettualmente da alcune definizioni portate avanti da  filosofi come John Stuart Mill che definisce la causalità come “the antecedent, or the concurrence of antecedents, on which [a given phenomenon] is invariably and unconditionally consequent”, per Mill dunque possiamo dire che A causa B se e solo se ogni volta che succede A succede anche B . Questo modello di causalità è molto riduttivo e ignora la aleatorietà degli eventi, per questo dobbiamo introdurre il potential outcome model. 
-
-% 
-
-\section{Potential Outcome model}
-\label{sect:PotentialOM}
+\chapter{Potential outcome model}
+\label{chapt:PotentialOM}
 Il potential outcome model definisce l'effetto causale di un evento A come la differenza tra i due "stati" del mondo, cioè il mondo dove accade A e il mondo dove non accade A.
 
 Poniamo ad esempio di voler capire se veramente un medicinale possa migliorare il mal di testa. Formalizziamo il problema ponendo X come l'insieme di covariate dei pazienti, D il regime di trattamento (che assume il valore 1 se viene dato il medicinale mentre assume valore 0 quando al paziente viene somministrato il placebo) e $Y^{obs}_i$ come il numero di minuti per cui persiste il mal di testa. 
@@ -93,9 +63,9 @@ Age & Sex & $Y^{0}_i$ & $Y^{1}_i$ \\ \hline
 \end{tabular}
 \caption{Tabella esperimento }
 \end{table}
-Abbiamo dunque ridotto il problema della causalità ad un problema di \textit{Missing Data}, questa è la forza del modello usato
+Abbiamo dunque ridotto il problema della causalità ad un problema di \textit{Missing Data}, questa è la forza del modello usato.
 
-\subsection{Studi randomizzati: Ruolo della randomizzazione}
+\section{Studi randomizzati: Ruolo della randomizzazione}
 Spesso si sente parlare di studi clinici randomizzati controllati, cioè studi in cui a metà dei partecipanti viene dato un placebo e all'altra metà il medicinale che è oggetto di studio, ovviamente né i medici né i pazienti sono a conoscenza di quali persone hanno assunto una o l'altra cosa. La situazione può essere espressa con un DAG in questa maniera: 
 \begin{figure}[H]
 \centering
@@ -135,7 +105,7 @@ $$SDO = \frac{1}{N_1}\sum_i(y_i|d_i=1) - \frac{1}{N_2}\sum_i(y_i|d_i=0) \overset
 Dalla equazione \ref{eq:ATT_R} e \ref{eq:ATU_R} possiamo concludere che nel caso randomizzato avremo che $ATE = ATT = ATU$.
 
 
-\subsection{Studi osservazionali}
+\section{Studi osservazionali}
 Gli studi osservazionali (?) sono invece strutturati in modo diverso, i ricercatori osservano e raccolgono dati su individui o gruppi senza intervenire o manipolare alcun aspetto dell'ambiente di studio, per 2 motivi principali
 \begin{enumerate}
 \item Potrebbe essere non etico o pratico, dividere la popolazione in maniera casuale (immaginiamo di volere studiare se fumare causa un aumento nel rischio del cancro)
@@ -162,27 +132,3 @@ Dunque la cosa principale che cambia dal caso precedente è che $D \not \perp\!\
 \caption{Dag per studio osservazionale}
 \label{fig:dag_OBS}
 \end{figure}
-
-
-Una possibile soluzione è stata proposta da Rubin con il propensity score matching .
-
-
-\subsection{Assunzioni di fondo}
-\subsubsection{SUTVA}
-\subsubsection{Ignorabilità}
-
-
-
-
-
-
-
-
-
-
-
-\bibliographystyle{plain}
-\bibliography{bibliografia}
-\nocite{*} 
-
-\end{document}
