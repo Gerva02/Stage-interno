@@ -20,18 +20,16 @@ Age & Sex & $Y^{0}_i$ & $Y^{1}_i$ & $\delta_i$ \\ \hline
 \end{tabular}
 \caption{Tabella esperimento }
 \end{table}
-Vediamo che il $\delta$ non è sempre positivo dunque la medicina non ha migliorato la situazione per tutti, notiamo però che in generale ha ridotto il tempo del malessere, questo però non basta dobbiamo essere più precisi e quantificare esattamente la tipologia e la dimensione del effetto.
+Vediamo che il $\delta$ non è sempre positivo dunque la medicina non ha migliorato la situazione per tutti, notiamo però che in generale ha ridotto il tempo del malessere, questo però non basta, dobbiamo essere più precisi quantificando esattamente la tipologia e la dimensione dell'effetto.
 
 \paragraph{Definizione parametri} \hspace{0pt} \\
 \label{parag:param}
 Definiamo quindi alcune quantità che ci risulteranno utili : 
 \begin{itemize}
 \item CATE o Conditional Average Treatment Effect è definito come $E[Y^{1}_i- Y^{0}_i|X] = E[\delta_i|X]$, quindi $CATE_{(M,20)}=E[\delta_i|X=(M,20)] \approx \frac{18-2}{2}=8$ , possiamo quindi dire che tra i maschi ventenni la medicina causa in media una riduzione di 8 minuti nella durata del mal di testa .
-\item ATE o average treatment effect come  $E[Y^{1}_i- Y^{0}_i] = E[\delta_i]$, quindi $ATE= E[\delta_i] \approx \frac{18+12-2+18+3-9+11}{8}$.
-
-\item ATT o average treatment on the treated $E[Y^{1}_i- Y^{0}_i|D=1] = E[\delta_i|D=1]$ 
-
-\item ATU o average treatment on the untreated
+\item ATE o Average Treatment Effect è definito come  $E[Y^{1}_i- Y^{0}_i] = E[\delta_i]$, quindi $ATE= E[\delta_i] \approx \frac{18+12-2+18+3-9+11}{8}$.
+\item ATT o Average Treatment on the Treated è definito come  $E[Y^{1}_i- Y^{0}_i|D=1] = E[\delta_i|D=1]$ 
+\item ATU o Average Treatment on the Untreated è definito come 
 $E[Y^{1}_i- Y^{0}_i|D=1] = E[\delta_i|D=0]$
 \end{itemize}
  
@@ -87,10 +85,11 @@ Spesso si sente parlare di studi clinici randomizzati controllati, cioè studi i
 Ma perché questo procedimento è ormai la norma per verificare l'efficacia di un farmaco? E cosa ci può dire veramente un esperimento del genere? Sotto il potential outcome model questo procedimento può essere formalizzato tramite questa indipendenza
 \begin{equation}
 D \perp\!\!\!\perp (Y^{0},Y^{1})
-\label{eq:indipendence_r}
 \end{equation}
-ciò significa che il trattamento non è amministrato in base agli potential outcome, ma a caso. Non bisogna però confondersi e pensare che ciò implichi che $D \perp\!\!\!\perp Y^{obs}$, infatti ciò è espressamente falso ogni volta che il medicinale ha effetto su infatti noi speriamo che il nostro trattamento abbia un effetto su $Y^{obs}$.
-Grazie alla equazione \ref{eq:indipendence_r} abbiamo che $E[Y^1_i] = E[Y^{1}_i | D_i = 1]  $ e la stessa cosa per $E[Y^0_i] = E[Y^{0}_i | D_i = 0] $.
+\label{eq:indipendence_r}
+
+ciò significa che il trattamento non è amministrato in base ai potential outcome, ma in modo casuale. Non bisogna però confondersi e pensare che ciò implichi che $D \perp\!\!\!\perp Y^{obs}$, infatti ciò è espressamente falso ogni volta che il medicinale ha effetto su $Y^{obs}$.
+Grazie all'equazione \ref{eq:indipendence_r} abbiamo che $E[Y^1_i] = E[Y^{1}_i | D_i = 1]  $ e la stessa cosa per $E[Y^0_i] = E[Y^{0}_i | D_i = 0] $.
 Possiamo quindi dire che :
 \begin{align}
 ATE &= E[Y^1_i-Y^0_i ] \\ 
@@ -102,14 +101,14 @@ ATE &= E[Y^1_i-Y^0_i ] \\
 Nell'equazione \ref{eq:ATE_R} entrambi gli addenti sono quantità \textit{fattuali}, grazie alla legge dei grandi numeri stimiamo queste quantità con delle semplici medie, chiameremo quindi SDO la semplice differenza delle media osservate per i gruppi:
 $$SDO = \frac{1}{N_1}\sum_i(y_i|d_i=1) - \frac{1}{N_2}\sum_i(y_i|d_i=0) \overset{\underset{\mathrm{(N_1, N_2) \rightarrow \infty}}{}}{=} ATE$$
 
-Dalla equazione \ref{eq:ATT_R} e \ref{eq:ATU_R} possiamo concludere che nel caso randomizzato avremo che $ATE = ATT = ATU$.
+Dall'equazione \ref{eq:ATT_R} e \ref{eq:ATU_R} possiamo concludere che nel caso randomizzato avremo che $ATE = ATT = ATU$.
 
 
-\section{Studi osservazionali}
-Gli studi osservazionali (?) sono invece strutturati in modo diverso, i ricercatori osservano e raccolgono dati su individui o gruppi senza intervenire o manipolare alcun aspetto dell'ambiente di studio, per 2 motivi principali
+\section{Studi osservazionali (?)} % esiste il termine?
+Gli studi osservazionali (?) sono invece strutturati in modo diverso, i ricercatori osservano e raccolgono dati su individui o gruppi senza intervenire o manipolare alcun aspetto dell'ambiente di studio, per 2 motivi principali:
 \begin{enumerate}
-\item Potrebbe essere non etico o pratico, dividere la popolazione in maniera casuale (immaginiamo di volere studiare se fumare causa un aumento nel rischio del cancro)
-\item Gli eventi sono già accaduti (immaginiamo studio su come i tassi di interesse influenzino il consumo)
+\item Potrebbe essere non etico o pratico dividere la popolazione in maniera casuale (immaginiamo di volere studiare se fumare causa un aumento nel rischio del cancro)
+\item Gli eventi sono già accaduti (immaginiamo di volere studiare se i tassi di interesse incidano sul consumo)
 \end{enumerate}
 
 Dunque la cosa principale che cambia dal caso precedente è che $D \not \perp\!\!\!\perp (Y^{0},Y^{1})$, possiamo dunque rappresentare la situazione con il seguente DAG:
