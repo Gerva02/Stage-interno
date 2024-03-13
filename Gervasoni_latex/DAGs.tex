@@ -1,0 +1,103 @@
+\chapter{DAGs}
+\label{chapt:DAGs}
+
+Introduciamo come primo argomento i DAGs o Directed Acyclic Graph, questi servono per schematizzare relazioni di causalità che al momento non verrà   
+definità rigorosamente affronteremo quella parte nel capitolo \ref{chapt:PotentialOM}.
+
+
+\section{Tipi di collegamento}
+Analiziamo un singolo \textit{node} in questo caso B, vediamo che se deve essere collegato ad A e B gli unici modi in cui si può collegare sono i seguenti: 
+\begin{figure}[H]
+\centering    
+	\begin{tikzpicture}
+		\node (A) at (0,0) {$A$};
+    		\node (B) at (1,1) {$B$};
+    		\node (C) at (2,0) {$C$};
+		\path[->] (A) edge (B);
+    		\path[<-] (B) edge (C);
+    		\path[->] (A) edge (C);
+	\end{tikzpicture}
+\caption{DAG: Common effect}
+\label{DAG:Common effect}
+\end{figure} 
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\node (A) at (0,0) {$A$};
+    		\node (B) at (1,1) {$B$};
+    		\node (C) at (2,0) {$C$};
+    		\path[->] (A) edge (B);
+    		\path[->] (B) edge (C);
+		\path[->] (A) edge (C);
+	\end{tikzpicture}
+\caption{DAG: Mediator}
+\label{DAG:Mediator}
+\end{figure} 
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\node (A) at (0,0) {$A$};
+    		\node (B) at (1,1) {$B$};
+    		\node (C) at (2,0) {$C$};
+    		\path[<-] (A) edge (B);
+    		\path[->] (B) edge (C);
+    		\path[->] (A) edge (C);
+	\end{tikzpicture}
+\caption{DAG: Common cause}
+\label{DAG:Common cause}
+\end{figure}
+
+Dunque B nel grafico \ref{DAG:Common effect} viene chiamato \textit{collider}, mentre B nei grafici \ref{DAG:Mediator} e \ref{DAG:Common cause} viene definito \textit{non colliders}.
+Infatti se volessimo quantificare la relazione causale tra A e C quando B è un \textit{non collider} risulta più difficoltoso perchè sappiamo che B introduce correlazioni spurie tra A e C. Invece nel caso mostrato in figura \ref{DAG:Common effect} potremmo stimare esattamente come fatto nel equazione 
+
+
+% magari metterli di fianco
+%\begin{figure}[ht]
+%  \subcaptionbox{First subfigure}[.22\linewidth]{%
+%	\begin{tikzpicture}
+%		\node (A) at (0,0) {$A$};
+%    		\node (B) at (1,0) {$B$};
+%    		\node (C) at (2,0) {$C$};
+%    		\path[<-] (A) edge (B);
+%    		\path[->] (B) edge (C);
+%	\end{tikzpicture}
+%  }%
+%  \hfill
+%  \subcaptionbox{Second subfigure}[.22\linewidth]{%
+%	\begin{tikzpicture}
+%		\node (A) at (0,0) {$A$};
+%    		\node (B) at (1,0) {$B$};
+%    		\node (C) at (2,0) {$C$};
+%    		\path[<-] (A) edge (B);
+%    		\path[->] (B) edge (C);
+%	\end{tikzpicture}
+%  }
+%  \subcaptionbox{First subfigure}[.22\linewidth]{%
+%	\begin{tikzpicture}
+%		\node (A) at (0,0) {$A$};
+%    		\node (B) at (1,0) {$B$};
+%    		\node (C) at (2,0) {$C$};
+%    		\path[<-] (A) edge (B);
+%    		\path[->] (B) edge (C);
+%	\end{tikzpicture}
+%  }%
+%
+%\end{figure}
+
+\section{Back door criterion}
+
+\section{Collider Bias}
+\begin{figure}[H]
+\centering
+	\begin{tikzpicture}
+		\node (A) at (0,0) {$A$};
+    		\node (B) at (1,1) {$B$};
+    		\node (C) at (2,0) {$C$};
+		\path[->] (A) edge (B);
+    		\path[<-] (B) edge (C);
+    		\path[->] (A) edge (C);
+	\end{tikzpicture}
+\caption{DAG:collider bias}
+\label{DAG:Colliderbias}
+\end{figure} 
+
