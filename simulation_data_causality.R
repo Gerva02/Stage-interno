@@ -22,11 +22,12 @@ possibile_min <- 0:90
 grid_1 <- outer(possibile_min,possibile_ages, Yobs_lik )
 grid_0 <- outer(possibile_min,possibile_ages, Yobs_lik, tr=0 ) 
 persp(possibile_min, possibile_ages,grid_1) #questo è il grafico f(y|X, D=1) (z è una probabilità)
-persp(possibile_min, possibile_ages,grid_0) #questo è il grafico f(y|X, D=1) (z è una probabilità)
+persp(possibile_min, possibile_ages,grid_0) #questo è il grafico f(y|X, D=0) (z è una probabilità)
 #vediamo quindi che con l'età il malditesta dura di più e per i non trattati dura di più
 
 ATE <- 50.5/2 - 50.5/1.4
 #previsione teorica che deriva da prob condizionata
+#empirico.tex spiegherà il processo per arrivare a questo.
 
 rct <- tibble(
   age = sample(1:100, n , replace = T),
@@ -46,7 +47,7 @@ rct %>%
 #più si va avanti più la lunghezza dei mal di testa aumenta come la varianza (poisson)
 
 
-SDO <- mean(rct%>% filter(D==1) %>% pull(headacke_length)) - mean(rct %>% filter(D==0) %>% pull(headacke_length))
+SDO <- rct%>% filter(D==1) %>% pull(headacke_length)%>% mean() - rct %>% filter(D==0) %>% pull(headacke_length) %>% mean()
 #Qua calcoliamo quello che il mixtape chiama SDO che essendo questo un random control trial  
 #sappiamo che SDO == ATE con n -> inf
 
