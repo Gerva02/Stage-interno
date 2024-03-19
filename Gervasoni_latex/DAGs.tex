@@ -3,7 +3,7 @@
 
 Introduciamo come primo argomento i DAGs o Directed Acyclic Graph, questi servono per schematizzare relazioni di causalità, che non verrà  
 definità rigorosamente ora ma affrontata nel capitolo \ref{chapt:PotentialOM}.
-Un DAG è un grafo formato da vertici che rappresentano gli eventi e da archi che rappresentano la relazione di causalità tra i due eventi. Viene detto aciclico perché partendo da un vertice e seguendo gli archi non si può tornare su  quel vertice. Questi grafi non sono in grado di descrivere causalità reciproca simultanea $A \leftrightarrow B $  o feedback loop $A \rightarrow B \rightarrow A$ a meno che si inserisca un ulteriore vertice con lo stesso nome, anche se in questi casi non si consiglia di utilizzare questo tipo di grafici
+Un DAG è un grafo formato da vertici che rappresentano le variabili in analisi e da archi che rappresentano la relazione di causalità le variabili. Viene detto aciclico perché partendo da un vertice e seguendo gli archi non si può tornare su  quel vertice. Questi grafi non sono in grado di descrivere causalità reciproca simultanea $A \leftrightarrow B $  o feedback loop $A \rightarrow B \rightarrow A$ a meno che si inserisca un ulteriore vertice con lo stesso nome, anche se in questi casi non si consiglia di utilizzare questo tipo di grafici
 \citep{cunningham2021causal}.
 
 \begin{figure}[ht]
@@ -48,7 +48,8 @@ Bisogna inoltre dire che i DAGs, essendo dei grafi sono di natura più sintetici
 Fare breve cappello
 
 \subsection{Vertici}
-Analizziamo un singolo vertice in questo caso B, vediamo che se deve essere collegato ad A e C gli unici modi in cui si può collegare sono i seguenti: 
+
+Poniamo la C come la variabile \textit{outcome} cioè la variabile di interesse per l'indagine (la salute dopo un determinato intervento). Poniamo A come la variabile \textit{exposure} cioè quella di cui vogliamo quantificare l'effetto causale sulla variabile \textit{outcome} (per esempio che tipo di intervento viene proposto). Analizziamo quindi un singolo vertice in questo caso B, gli unici modi in cui si può collegare ad A e C sono i seguenti: 
 \begin{figure}[H]
 \centering    
 	\begin{tikzpicture}
@@ -88,8 +89,8 @@ Analizziamo un singolo vertice in questo caso B, vediamo che se deve essere coll
 \caption{DAG: Common cause}
 \label{DAG:Common cause}
 \end{figure}
-Dunque B nel grafico \ref{DAG:Common effect} viene chiamato \textit{collider}, mentre nei grafici \ref{DAG:Mediator} e \ref{DAG:Common cause} viene definito \textit{non collider}.
-Infatti se volessimo quantificare la relazione causale tra A e C quando B è un \textit{non collider} risulta più difficoltoso perchè sappiamo che B introduce  sistematicamente correlazioni spurie tra A e C (bisogna capire meglio come affrontare i mediators [bisogna controllarli?], osservazione più giusta per i ). Invece nel caso mostrato in figura \ref{DAG:Common effect} potremmo interpretare il $\hat{\delta}$ della regressione lineare:
+Dunque B nel grafico \ref{DAG:Common effect} viene chiamato \textit{collider}, mentre nei grafici \ref{DAG:Mediator} e \ref{DAG:Common cause} viene definito \textit{non collider}, mentre solo \ref{DAG:Common cause} come \textit{confunder}.
+Infatti se volessimo quantificare la relazione causale tra A e C quando B è un \textit{non collider} o  un \textit{confunder} risulta più difficoltoso perchè sappiamo che B introduce  sistematicamente correlazioni spurie tra A e C (bisogna capire meglio come affrontare i mediators [bisogna controllarli?], osservazione più giusta per i ). Invece nel caso mostrato in figura \ref{DAG:Common effect} potremmo interpretare il $\hat{\delta}$ della regressione lineare:
 \begin{equation}
 C_i= A_i\delta + \epsilon_i
 \end{equation}

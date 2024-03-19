@@ -1,7 +1,12 @@
 library(tidyverse)
 n <- 1000
-n_change_points <- 5 #numero di change points
-tau <- seq(from=0, to=1000, length.out= n_change_points+1)  #tempo t in cui si campia
+n_change_points <- 5 #numero di change points meno uno (bug)
+#tau <- seq(from=0, to=1000, length.out= n_change_points+1)  #tempo t in cui si campia
+tau <- sample(size = n_change_points-1 , x = 0:(n-1))%>% #rende i change points veramente casuali
+  append(c(0,n))%>%
+  sort()
+
+?sample
 means <- rbeta(n_change_points,shape=10, shape2 = 50) # le medie non ripetute delle binomiali
 probs <- rep(NA, n) #le medie ripetute 
 latent_state <- rep(NA, n) #questo rappresenta il numero dello stato latente s_t (chibbs)
