@@ -31,7 +31,7 @@ Definiamo quindi alcune quantità che ci risulteranno utili :
 \item ATE o Average Treatment Effect è definito come  $E[Y^{1}_i- Y^{0}_i] = E[\delta_i]$, quindi $ATE= E[\delta_i] \approx \frac{18+12-2+18+3-9+11}{8}$.
 \item ATT o Average Treatment on the Treated è definito come  $E[Y^{1}_i- Y^{0}_i|D=1] = E[\delta_i|D=1]$ 
 \item ATU o Average Treatment on the Untreated è definito come 
-$E[Y^{1}_i- Y^{0}_i|D=1] = E[\delta_i|D=0]$
+$E[Y^{1}_i- Y^{0}_i|D=1] = E[\delta_i|D=1]$
 \end{itemize}
  
 Non possiamo calcolare gli ultimi due perché siamo ancora nel caso ipotetico dove conosciamo i due potential outcomes.
@@ -100,7 +100,7 @@ ATE &= E[Y^1_i-Y^0_i ] \\
   \end{align}
 
 Nell'equazione \ref{eq:ATE_R} entrambi gli addenti sono quantità \textit{fattuali}, grazie alla legge dei grandi numeri stimiamo queste quantità con delle semplici medie, chiameremo quindi SDO la semplice differenza delle media osservate per i gruppi:
-$$SDO = \frac{1}{N_1}\sum_i(y_i|d_i=1) - \frac{1}{N_2}\sum_i(y_i|d_i=0) \overset{\underset{\mathrm{(N_1, N_2) \rightarrow \infty}}{}}{=} ATE$$
+$$SDO = \frac{1}{N_1}\sum_{i:d_i=1}y_i - \frac{1}{N_2}\sum_{i:d_i=0}y_i \overset{\underset{\mathrm{(N_1, N_2) \rightarrow \infty}}{}}{=} ATE$$
 
 Dall'equazione \ref{eq:ATT_R} e \ref{eq:ATU_R} possiamo concludere che nel caso randomizzato avremo che $ATE = ATT = ATU$.
 

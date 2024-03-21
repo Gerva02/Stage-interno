@@ -89,8 +89,8 @@ Poniamo la C come la variabile \textit{outcome} cioè la variabile di interesse 
 \caption{DAG: Common cause}
 \label{DAG:Common cause}
 \end{figure}
-Dunque B nel grafico \ref{DAG:Common effect} viene chiamato \textit{collider}, mentre nei grafici \ref{DAG:Mediator} e \ref{DAG:Common cause} viene definito \textit{non collider}, mentre solo \ref{DAG:Common cause} come \textit{confunder}.
-Infatti se volessimo quantificare la relazione causale tra A e C quando B è un \textit{non collider} o  un \textit{confunder} risulta più difficoltoso perchè sappiamo che B introduce  sistematicamente correlazioni spurie tra A e C (bisogna capire meglio come affrontare i mediators [bisogna controllarli?], osservazione più giusta per i ). Invece nel caso mostrato in figura \ref{DAG:Common effect} potremmo interpretare il $\hat{\delta}$ della regressione lineare:
+Dunque B nel grafico \ref{DAG:Common effect} viene chiamato \textit{collider}, mentre nei grafici \ref{DAG:Mediator} e \ref{DAG:Common cause} viene definito \textit{non collider}, mentre solo \ref{DAG:Common cause} come \textit{confounder}.
+Infatti se volessimo quantificare la relazione causale tra A e C quando B è un \textit{non collider} o  un \textit{confounder} risulta più difficoltoso perchè sappiamo che B introduce  sistematicamente correlazioni spurie tra A e C (bisogna capire meglio come affrontare i mediators [bisogna controllarli?], osservazione più giusta per i ). Invece nel caso mostrato in figura \ref{DAG:Common effect} potremmo interpretare il $\hat{\delta}$ della regressione lineare:
 \begin{equation}
 C_i= A_i\delta + \epsilon_i
 \end{equation}
