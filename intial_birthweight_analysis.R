@@ -30,7 +30,7 @@ groups<-cut(fit$fitted.values,5)
 #usando il test chi quadro di Cochran
 
 #questo è sicuramente sbagliato perché non stimamo il test chi quadro 
-rr1 <-  Match(Y = Y , X = as.numeric(buckets), Tr = as.vector(tr) ) 
+rr1 <-  Match(Y = Y , X = as.numeric(groups), Tr = as.vector(tr) ) 
 summary(rr1) # qua stima il t value non 
 #non so quanto sia valido come risultato però vediamo un ate >0 (dunque c'è un effetto causale tra il fumare e il basso peso del feto)
 
