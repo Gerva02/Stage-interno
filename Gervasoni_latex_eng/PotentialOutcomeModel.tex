@@ -1,0 +1,153 @@
+\chapter{Potential outcome model}
+\label{chapt:PotentialOM}
+The potential outcome model defines the causal effect of an event A as the difference between the two possible states of the world, namely the world where A occurs and the one where A does not occur.
+For example, we would like to understand if a medicine can truly improve headaches. Let's formalize the problem by setting X as the set of patient covariates (Age , Gender,... ), D as the treatment regimen (set equal to 1 if the patient takes the medicine and 0 if he takes the placebo), and $Y$ as the number of minutes the headache persists.
+Under this model the causal effect of the medicine would be calculated by subtracting $Y_i|D=1$, which we'll call $Y^{1}_i$, and $Y_i|D=0$ which we'll call $Y^{0}_i$. These are the so called "potential outcome" because they are both \textit{a priori} observable, but only one can be observed \textit{a posteriori}. Let's introduce a numerical example of a random trial, where we somehow know both potential outcomes :
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Age & Sex & $Y^{0}_i$ & $Y^{1}_i$ & $\delta_i$ \\ \hline
+20 & M & 20 & 21 & -1  \\ \hline
+20 & F & 15 & 3 & 12 \\ \hline
+20 & M & 8 & 10 & -2 \\ \hline
+20 & F & 16 & 15 & 1 \\ \hline
+30 & M & 12 & 13 & -1 \\ \hline
+30 & F & 8 & 5 & 3 \\ \hline
+30 & M & 2 & 11 & -9  \\ \hline
+30 & F & 15 & 26 & 11 \\ \hline
+\end{tabular}
+\caption{Random trial knowing both potential outcomes }
+\label{rt_kbpo}
+\end{table}
+
+We can observe that $\delta$ isn't always positive, so the medicine didn't universally improve the situation, but it is seemingly clear that it had positive effects, this isn't nearly precise enough so we need to introduce some mathematical definitions :
+\paragraph{Parameter definition} \hspace{0pt} \\
+\label{parag:param}
+\begin{itemize}
+\item CATE or Conditional Average Treatment Effect is defined as $E[Y^{1}_i- Y^{0}_i|X] = E[\delta_i|X]$, so $CATE_{(M,20)}=E[\delta_i|X=(M,20)] \approx \frac{18-2}{2}=8$ , we can say that on the medicine caused a reduction on average of 8 minutes between 20 year old males.
+\item ATE or Average Treatment Effect is defined as  $E[Y^{1}_i- Y^{0}_i] = E[\delta_i]$, quindi $ATE= E[\delta_i] \approx \frac{18+12-2+18+3-9+11}{8}$.
+\item ATT o Average Treatment on the Treated is defined as  $E[Y^{1}_i- Y^{0}_i|D=1] = E[\delta_i|D=1]$ 
+\item ATU o Average Treatment on the Untreated is defined as
+$E[Y^{1}_i- Y^{0}_i|D=1] = E[\delta_i|D=1]$
+\end{itemize}
+ 
+
+In this example we somehow know both potential outcomes so we can't calculate the last two quantities.
+It useful to make a distinction between \textit{factual} and \textit{counter factual} values, the former refers to the state of the world we are currently in and the latter refers to \textit{what would have been} if the treatment were different.
+We can better understand the distinction between the two through the switching equation: 
+\begin{equation}
+Y_i^{obs} = D_i \cdot Y^1_i + (1-D_i) \cdot Y^0_i
+\label{eq:switching}
+\end{equation}
+We can see that $Y^1_i$ is either a \textit{factual} value when $D_i=1$ or \textit{counter factual} when $D_i=0$.
+It's obvious that in real setting, we wont ever be able to fill all the data like in table \ref{rt_kbpo}, at least half of the value will be missing and Bayesian methods will help us fill it.
+An example of such table could be this:
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+Age & Sex & $Y^{0}_i$ & $Y^{1}_i$ \\ \hline
+20 & M & 20 & ?  \\ \hline
+20 & F & 15 & ? \\ \hline
+20 & M & ? & 10 \\ \hline
+20 & F & ? & 15  \\ \hline
+30 & M & 12 & ? \\ \hline
+30 & F & 8 & ? \\ \hline
+30 & M & ? & 11   \\ \hline
+30 & F & ? & 26 \\ \hline
+\end{tabular}
+\caption{Tabella esperimento }
+\end{table}
+The potential outcome model manages to transform the intractable problem of causation in to a much more manageable problem of \textit{missing data}.
+
+\section{Assumptions and exclusion restriction}
+So far we hid a few of the assumption that are necessary for an easier  introduction. 
+Let's start with the most important \textit{exclusion restriction} that is  an assumption that rely on external, substantive, information to 
+
+\citep{imbens2015causal}
+
+\subsection{SUTVA}
+\begin{ass}
+The potential outcome for any unit do not vary with the treatments assigned to other units and, for each unit, there are no different forms or versions of each treatment level, which lead to different potential outcomes.
+\label{sutva}
+\end{ass}
+\citep{imbens2015causal}
+\ref{sutva}
+
+\subsection{Ignorability}
+
+"fan li : a tutorial on causal inference"
+\subsection{Superpopulation and finite samples}
+
+
+
+\section{Studi randomizzati: Ruolo della randomizzazione}
+We often hear about double-blind randomized trials, where some of the patients are given the medicine and the other are given a placebo with neither the doctors nor the patients aware of who received what. Such trial can be expressed through a DAG in this way: 
+\begin{figure}[H]
+\centering
+	\begin{tikzpicture}
+		\node (x) at (0,1) {$X$};
+    		%\node (yz) at (0,0) {$Y^{1}$};
+    		%\node (yo) at (2,0) {$Y^{0}$};
+		\node (y) at (1,0) {$Y^{obs}$};
+    		\node (D) at (2,1) {$D$};
+    		%\path[->] (x) edge (yz);
+    		%\path[->] (x) edge (yo);
+    		\path[->] (x) edge (y);
+    		%\path[<-] (T) edge (x);
+    		\path[->] (D) edge (y);
+	\end{tikzpicture}
+\caption{Dag per studio randomizzato}
+\label{fig:dag_random_EX}
+\end{figure}
+Why is this kind of trial become the golden standard for causal inference? What can such a trial truly tell us?
+Under the potential outcome model this kind of trial imply this independence:
+\begin{equation}
+D \perp\!\!\!\perp (Y^{0},Y^{1})
+\end{equation}
+\label{eq:indipendence_r}
+
+This means that the potential outcomes didn't play a role in determining the treatment regime. This \textbf{doesn't} imply that $D \perp\!\!\!\perp Y^{obs}$, in fact is patently false each time a medicine has an effect on patient. By virtue of equation \ref{eq:indipendence_r}, we can state that $E[Y^1_i] = E[Y^{1}_i | D_i = 1]  $ and the same for $E[Y^0_i] = E[Y^{0}_i | D_i = 0] $.
+We can than say that:
+\begin{align}
+ATE &= E[Y^1_i-Y^0_i ] \\ 
+ &= E[Y^{1}_i | D_i = 1]- E[Y^{0}_i | D_i = 0]\label{eq:ATE_R} \\
+	& =E[Y^{1}_i | D_i = 1]- E[Y^{0}_i | D_i = 1] \label{eq:ATT_R} \\
+ &= E[Y^{1}_i | D_i = 0]- E[Y^{0}_i | D_i = 0] \label{eq:ATU_R}
+  \end{align}
+In the equation \ref{eq:ATE_R} both quantities are \textit{factual}, through the law of large number we can estimate both as means. We will define as SDO the simple difference in means in the observation:
+$$SDO := \frac{1}{N_1}\sum_{i:d_i=1}y_i - \frac{1}{N_2}\sum_{i:d_i=0}y_i \overset{\underset{\mathrm{(N_1, N_2) \rightarrow \infty}}{}}{=} ATE$$
+
+We can also conclude from equation \ref{eq:ATT_R} and \ref{eq:ATU_R} that in a randomized trial we have $ATE = ATT = ATU$.
+\subsection{Parte empirica}
+
+% crucial to understand the difference bewteen definition and estimation 
+\section{Observational studies} % esiste il termine?
+Observational studies are much different, researchers gather data that isn't intended to be randomized trials, were the researchers cannot intervene and impose the randomization, for two main reason :
+\begin{enumerate}
+\item Ethical or practicability concerns  (EX: if we wanted to know whether smoking causes cancer)
+\item The events might have already taken place  (EX: if we wanted to study the effect of a certain policy)
+\end{enumerate}
+
+The main difference is that $D \not \perp\!\!\!\perp (Y^{0},Y^{1})$, we can represent this too with a DAG:
+\begin{figure}[!h]
+\centering
+	\begin{tikzpicture}
+		\node (x) at (0,1) {$X$};
+    		%\node (yz) at (0,0) {$Y^{1}$};
+    		%\node (yo) at (2,0) {$Y^{0}$};
+    		\node (y) at (1,0) {$Y^{obs}$};
+    		\node (D) at (2,1) {$D$};
+    		%\path[->] (x) edge (yz);
+    		%\path[->] (x) edge (yo);
+    		\path[->] (x) edge (D);
+    		\path[->] (x) edge (y);
+    		\path[->] (D) edge (y);
+    		%\path[<-] (T) edge (x);
+    		%\path[->] (T) edge (y);
+	\end{tikzpicture}
+\caption{Dag per studio osservazionale}
+\label{fig:dag_OBS}
+\end{figure}

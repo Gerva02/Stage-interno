@@ -1,0 +1,135 @@
+\chapter{Potential outcome model}
+\label{chapt:PotentialOM}
+
+The potential outcome model defines the causal effect of an event A as the difference between the two "states" of the world, namely the world where A occurs and the world where A does not occur.
+
+For example, suppose we want to understand if a medicine can truly improve headaches. Let's formalize the problem by setting X as the set of patient covariates, D as the treatment regime (taking the value 1 if the medicine is given and 0 when the patient is given a placebo), and $Y^{obs}_i$ as the number of minutes the headache persists. 
+So, if we could simultaneously know $Y^{obs}_i|D=1$, which we'll call $Y^{1}_i$, and $Y^{obs}_i|D=0$, which we'll call $Y^{0}_i$, then calculating if the medicine causes an improvement would be straightforward. Let's introduce a numerical example: 
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Age & Sex & $Y^{0}_i$ & $Y^{1}_i$ & $\delta_i$ \\ \hline
+20 & M & 20 & 21 & -1  \\ \hline
+20 & F & 15 & 3 & 12 \\ \hline
+20 & M & 8 & 10 & -2 \\ \hline
+20 & F & 16 & 15 & 1 \\ \hline
+30 & M & 12 & 13 & -1 \\ \hline
+30 & F & 8 & 5 & 3 \\ \hline
+30 & M & 2 & 11 & -9  \\ \hline
+30 & F & 15 & 26 & 11 \\ \hline
+\end{tabular}
+\caption{Experiment table}
+\end{table}
+
+We see that $\delta$ is not always positive, so the medicine has not improved the situation for everyone. However, we notice that in general, it has reduced the duration of discomfort. Yet, this is not sufficient; we need to be more precise by quantifying exactly the type and size of the effect.
+
+\paragraph{Definition of parameters} \hspace{0pt} \\
+\label{parag:param}
+We then define some quantities that will be useful:
+
+\begin{itemize}
+\item CATE or Conditional Average Treatment Effect is defined as $E[Y^{1}_i- Y^{0}_i|X] = E[\delta_i|X]$, thus $CATE_{(M,20)}=E[\delta_i|X=(M,20)] \approx \frac{18-2}{2}=8$, indicating that among twenty-year-old males, the medicine causes an average reduction of 8 minutes in headache duration.
+\item ATE or Average Treatment Effect is defined as $E[Y^{1}_i- Y^{0}_i] = E[\delta_i]$, thus $ATE= E[\delta_i] \approx \frac{18+12-2+18+3-9+11}{8}$.
+\item ATT or Average Treatment on the Treated is defined as $E[Y^{1}_i- Y^{0}_i|D=1] = E[\delta_i|D=1]$
+\item ATU or Average Treatment on the Untreated is defined as $E[Y^{1}_i- Y^{0}_i|D=1] = E[\delta_i|D=1]$
+\end{itemize}
+
+We cannot compute the last two because we are still in the hypothetical case where we know the two potential outcomes.
+Obviously, this table can never be filled as shown above because we can truly know only one quantity between $Y^0_{i}$ and $Y^1_{i}$; therefore, it will be impossible to be certain about the quantities defined earlier, but we will need to estimate them. Thus, it is useful to make the distinction between the \textit{factual} values, i.e., what really happened, and \textit{counterfactual} values, i.e., what would have happened if the treatment regime had been different.
+
+We can better understand the relationship between potential outcomes and observed outcomes through the "switching equation":
+\begin{equation}
+Y_i^{obs} = D_i \cdot Y^1_i + (1-D_i) \cdot Y^0_i
+\label{eq:switching}
+\end{equation}
+
+So, $Y_i^{obs} = Y^1_i$ when $D_i =1$, and $Y_i^{obs} = Y^0_i$ when $D_i = 0$. It is important to note that the difference between $Y_i^{obs}$ and $Y^0_i,Y^1_i$ is that the former are actual, empirical values that can be observed, while the latter are ex-ante values and thus exist before $D_i$ is administered.
+
+However, in reality, we will encounter a table more similar to this:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+Age & Sex & $Y^{0}_i$ & $Y^{1}_i$ \\ \hline
+20 & M & 20 & ?  \\ \hline
+20 & F & 15 & ? \\ \hline
+20 & M & ? & 10 \\ \hline
+20 & F & ? & 15  \\ \hline
+30 & M & 12 & ? \\ \hline
+30 & F & 8 & ? \\ \hline
+30 & M & ? & 11   \\ \hline
+30 & F & ? & 26 \\ \hline
+\end{tabular}
+\caption{Experiment table}
+\end{table}
+
+So, we have reduced the causality problem to a problem of \textit{Missing Data}, which is the strength of the model used.
+
+\section{Randomized Studies: Role of Randomization}
+Randomized controlled trials are often heard of, where half of the participants are given a placebo and the other half the medicine under study, with neither the doctors nor the patients aware of who received what. This situation can be expressed with a DAG in this way:
+
+\begin{figure}[H]
+\centering
+	\begin{tikzpicture}
+		\node (x) at (0,1) {$X$};
+		\node (y) at (1,0) {$Y^{obs}$};
+    		\node (D) at (2,1) {$D$};
+    		\path[->] (x) edge (y);
+    		\path[->] (x) edge (D);
+    		\path[->] (D) edge (y);
+	\end{tikzpicture}
+\caption{DAG for randomized study}
+\label{fig:dag_random_EX}
+\end{figure}
+
+But why is this procedure now the norm for verifying the efficacy of a drug? And what can such an experiment truly tell us? Under the potential outcome model, this procedure can be formalized through this independence:
+\begin{equation}
+D \perp\!\!\!\perp (Y^{0},Y^{1})
+\end{equation}
+
+This means that treatment is not administered based on potential outcomes but randomly. However, it is crucial not to confuse this with implying that $D \perp\!\!\!\perp Y^{obs}$, as this is expressly false whenever the medicine has an effect on $Y^{obs}$.
+Thanks to the equation \ref{eq:indipendence_r}, we have that $E[Y^1_i] = E[Y^{1}_i | D_i = 1]$ and the same for $E[Y^0_i] = E[Y^{0}_i | D_i = 0]$.
+We can therefore say that:
+
+\begin{align}
+ATE &= E[Y^1_i-Y^0_i ] \\ 
+ &= E[Y^{1}_i | D_i = 1]- E[Y^{0}_i | D_i = 0]\label{eq:ATE_R} \\
+	& =E[Y^{1}_i | D_i = 1]- E[Y^{0}_i | D_i = 1] \label{eq:ATT_R} \\
+ &= E[Y^{1}_i | D_i = 0]- E[Y^{0}_i | D_i = 0] \label{eq:ATU_R}
+\end{align}
+
+In equation \ref{eq:ATE_R}, both terms are factual quantities; using the law of large numbers, we can estimate these quantities with simple averages. We will call SDO the simple difference of the observed means for the groups:
+$$SDO = \frac{1}{N_1}\sum_{i:d_i=1}y_i - \frac{1}{N_2}\sum_{i:d_i=0}y_i \overset{\underset{\mathrm{(N_1, N_2) \rightarrow \infty}}{}}{=} ATE$$
+
+From equations \ref{eq:ATT_R} and \ref{eq:ATU_R}, we can conclude that in the randomized case, we will have $ATE = ATT = ATU$.
+
+\section{Observational Studies}
+Observational studies, on the other hand, are structured differently. Researchers observe and collect data on individuals or groups without intervening or manipulating any aspect of the study environment, for two main reasons:
+\begin{enumerate}
+\item It might be unethical or impractical to randomly divide the population (imagine wanting to study if smoking causes an increase in cancer risk).
+\item Events have already occurred (imagine wanting to study if interest rates affect consumption).
+\end{enumerate}
+
+Thus, the main thing that changes from the previous case is that $D \not \perp\!\!\!\perp (Y^{0},Y^{1})$. Therefore, we can represent the situation with the following DAG:
+
+\begin{figure}[H]
+\centering
+	\begin{tikzpicture}
+		\node (x) at (0,1) {$X$};
+    		\node (y) at (1,0) {$Y^{obs}$};
+    		\node (D) at (2,1) {$D$};
+    		\path[->] (x) edge (D);
+    		\path[->] (x) edge (y);
+    		\path[->] (D) edge (y);
+	\end{tikzpicture}
+\caption{DAG for observational study}
+\label{fig:dag_OBS}
+\end{figure}
+
+
+
+
+

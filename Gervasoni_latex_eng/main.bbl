@@ -1,0 +1,26 @@
+\begin{thebibliography}{4}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Baldi \& Shahbaba(2020)}]{baldi2020bayesian}
+\textsc{Baldi, P.} \& \textsc{Shahbaba, B.} (2020).
+\newblock Bayesian causality.
+\newblock \textit{The American Statistician} \textbf{74}, 249--257.
+
+\bibitem[{Cunningham(2021)}]{cunningham2021causal}
+\textsc{Cunningham, S.} (2021).
+\newblock \textit{Causal inference: The mixtape}.
+\newblock Yale university press.
+
+\bibitem[{Imbens \& Rubin(2015)}]{imbens2015causal}
+\textsc{Imbens, G.~W.} \& \textsc{Rubin, D.~B.} (2015).
+\newblock \textit{Causal inference in statistics, social, and biomedical
+  sciences}.
+\newblock Cambridge university press.
+
+\bibitem[{Rubin(1974)}]{rubin1974estimating}
+\textsc{Rubin, D.~B.} (1974).
+\newblock Estimating causal effects of treatments in randomized and
+  nonrandomized studies.
+\newblock \textit{Journal of educational Psychology} \textbf{66}, 688.
+
+\end{thebibliography}
