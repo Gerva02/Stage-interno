@@ -1,4 +1,4 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{6}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{Baldi \& Shahbaba(2020)}]{baldi2020bayesian}
@@ -17,10 +17,23 @@
   sciences}.
 \newblock Cambridge university press.
 
+\bibitem[{Rosenbaum \& Rubin(1983)}]{rosenbaum1983central}
+\textsc{Rosenbaum, P.~R.} \& \textsc{Rubin, D.~B.} (1983).
+\newblock The central role of the propensity score in observational studies for
+  causal effects.
+\newblock \textit{Biometrika} \textbf{70}, 41--55.
+
 \bibitem[{Rubin(1974)}]{rubin1974estimating}
 \textsc{Rubin, D.~B.} (1974).
 \newblock Estimating causal effects of treatments in randomized and
   nonrandomized studies.
 \newblock \textit{Journal of educational Psychology} \textbf{66}, 688.
+
+\bibitem[{Rubin(1980)}]{rubin1980randomization}
+\textsc{Rubin, D.~B.} (1980).
+\newblock Randomization analysis of experimental data: The fisher randomization
+  test comment.
+\newblock \textit{Journal of the American statistical association} \textbf{75},
+  591--593.
 
 \end{thebibliography}

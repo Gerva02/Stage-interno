@@ -63,22 +63,55 @@ Age & Sex & $Y^{0}_i$ & $Y^{1}_i$ \\ \hline
 The potential outcome model manages to transform the intractable problem of causation in to a much more manageable problem of \textit{missing data}.
 
 \section{Assumptions and exclusion restriction}
-So far we hid a few of the assumption that are necessary for an easier  introduction. 
-Let's start with the most important \textit{exclusion restriction} that is  an assumption that rely on external, substantive, information to 
-
-\citep{imbens2015causal}
+So far we hid a few of the assumption to avoid making this introduction unnecessary cumbersome however it is now necessary to point them out to avoid any unnecessary confusion.
+These are the so called \textit{exclusion  restriction} : assumption made with substantive knowledge of the subject matter, in fact any of these assumptions can be loosened if the specific case requires it, but they are considered to be most common assumption when tackling a problem of causal inference \citep{imbens2015causal}
 
 \subsection{SUTVA}
+This \textit{exclusion restriction} first proposed in  \citep{rubin1980randomization}, states that :
 \begin{ass}
 The potential outcome for any unit do not vary with the treatments assigned to other units and, for each unit, there are no different forms or versions of each treatment level, which lead to different potential outcomes.
 \label{sutva}
 \end{ass}
 \citep{imbens2015causal}
+
+This assumption can be split in two parts, the No interference component and the no hidden variation of treatment components. The former implies that any the potential outcomes for a given observation are independent from treatment of other units, it can be expressed by :
+$$ D_j \perp\!\!\!\perp (Y^{0}_i,Y^{1}_i) \\ \forall i \not = j$$
+For example in the headache situation we excluded \textit{a priori} that each unit treatment wouldn't effect an other, of course this kind of assumption ought to be carefully considered  by an expert on a case by case basis.
+This kind of assumption becomes shaky when we consider time series or pandemics where a unit treatments is very likely to impact the other chances of survival. The problem can be solved in two ways either by having a more suiting \textit{exclusion restriction} or by defining a unit in a broader term, in the vaccination example the unit could be the nation (given no spillover between nations), instead of the individual. 
+The second component instead implies that the treatment is homogeneous in the population, so back the headache example we cant have a medicine that has of different potency or is administered in different ways.
+
 \ref{sutva}
 
-\subsection{Ignorability}
+\subsection{Strong ignorability}
+This assumption was first formalized in \citep{rosenbaum1983central} , and aimw to restrict the possible assignment mechanism (e.g. )and has three main components :
+
+\begin{ass}[Individualistic assignment]
+An assignment mechanism is individualistic if $Pr(W_i| X_i , Y_i^0 ,Y_i^1) = q( X_i , Y_i^0 ,Y_i^1)$ for some function $q(.)$
+\end{ass}
+
+\begin{ass}[Probabilist assignment]
+An assignment mechanism is probabilistic if $Pr(W_i| X_i , Y_i^0 ,Y_i^1)$ is bounded strictly between 0 and 1 $\forall X,Y^1,Y^0,i$
+\end{ass}
+This requirement is important because we need to see the counter factual in the limit, the estimation if this condition is not met is practically impossible 
+
+
+\begin{ass}[Unconfounded assignment]
+An assignment mechanism $Pr(W_i| X_i , Y_i^0 ,Y_i^1)$ is unfounded if  it does not depend on the potential outcomes $Pr(W_i| X_i , Y_i^0 ,Y_i^1)=Pr(W_i| X_i )$ or $D_i  \perp\!\!\!\perp (Y^{0},Y^{1}) | X$
+\end{ass}
+This assumption is equivalent to   the back-door criterion 
+this assumption is not testable (pag 261 IR)
+%pag 38-39 rubin imbens
+
+
+% individualistic treatment see if it is meaningfully different from SUTVA
+% uncofoundeness (satifies back door criterion)
+% probabilistic treatment
+
+%dawid 1979
+
 
 "fan li : a tutorial on causal inference"
+
 \subsection{Superpopulation and finite samples}
 
 

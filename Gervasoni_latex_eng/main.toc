@@ -10,9 +10,9 @@
 \contentsline {paragraph}{Parameter definition}{8}{table.caption.7}%
 \contentsline {section}{\numberline {3.1}Assumptions and exclusion restriction}{9}{section.3.1}%
 \contentsline {subsection}{\numberline {3.1.1}SUTVA}{9}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}Ignorability}{9}{subsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.1.3}Superpopulation and finite samples}{9}{subsection.3.1.3}%
-\contentsline {section}{\numberline {3.2}Studi randomizzati: Ruolo della randomizzazione}{9}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Parte empirica}{10}{subsection.3.2.1}%
-\contentsline {section}{\numberline {3.3}Observational studies}{10}{section.3.3}%
-\contentsline {chapter}{Bibliografia}{11}{chapter*.11}%
+\contentsline {subsection}{\numberline {3.1.2}Strong ignorability}{10}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Superpopulation and finite samples}{10}{subsection.3.1.3}%
+\contentsline {section}{\numberline {3.2}Studi randomizzati: Ruolo della randomizzazione}{10}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Parte empirica}{11}{subsection.3.2.1}%
+\contentsline {section}{\numberline {3.3}Observational studies}{11}{section.3.3}%
+\contentsline {chapter}{Bibliografia}{13}{chapter*.11}%
