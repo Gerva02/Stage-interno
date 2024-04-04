@@ -83,7 +83,7 @@ The second component instead implies that the treatment is homogeneous in the po
 \ref{sutva}
 
 \subsection{Strong ignorability}
-This assumption was first formalized in \citep{rosenbaum1983central} , and aimw to restrict the possible assignment mechanism (e.g. )and has three main components :
+This assumption was first formalized in \citep{rosenbaum1983central} , and aims to restrict the possible assignment mechanism  (should i define a assignment mechanism ?) (e.g. )and has three main components :
 
 \begin{ass}[Individualistic assignment]
 An assignment mechanism is individualistic if $Pr(W_i| X_i , Y_i^0 ,Y_i^1) = q( X_i , Y_i^0 ,Y_i^1)$ for some function $q(.)$
@@ -92,13 +92,13 @@ An assignment mechanism is individualistic if $Pr(W_i| X_i , Y_i^0 ,Y_i^1) = q( 
 \begin{ass}[Probabilist assignment]
 An assignment mechanism is probabilistic if $Pr(W_i| X_i , Y_i^0 ,Y_i^1)$ is bounded strictly between 0 and 1 $\forall X,Y^1,Y^0,i$
 \end{ass}
-This requirement is important because we need to see the counter factual in the limit, the estimation if this condition is not met is practically impossible 
+This requirement is important because we need to see the counter factual in the limit, the estimation if this condition is not met is practically impossible, because it would rely only on extrapolation.  
 
 
 \begin{ass}[Unconfounded assignment]
 An assignment mechanism $Pr(W_i| X_i , Y_i^0 ,Y_i^1)$ is unfounded if  it does not depend on the potential outcomes $Pr(W_i| X_i , Y_i^0 ,Y_i^1)=Pr(W_i| X_i )$ or $D_i  \perp\!\!\!\perp (Y^{0},Y^{1}) | X$
 \end{ass}
-This assumption is equivalent to   the back-door criterion 
+This assumption is credible if we have a satisfied  the back-door criterion \citep{cunningham2021causal}.
 this assumption is not testable (pag 261 IR)
 %pag 38-39 rubin imbens
 
