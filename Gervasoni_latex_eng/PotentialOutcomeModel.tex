@@ -2,7 +2,7 @@
 \label{chapt:PotentialOM}
 The potential outcome model defines the causal effect of an event A as the difference between the two possible states of the world, namely the world where A occurs and the one where A does not occur.
 For example, we would like to understand if a medicine can truly improve headaches. Let's formalize the problem by setting X as the set of patient covariates (Age , Gender,... ), D as the treatment regimen (set equal to 1 if the patient takes the medicine and 0 if he takes the placebo), and $Y$ as the number of minutes the headache persists.
-Under this model the causal effect of the medicine would be calculated by subtracting $Y_i|D=1$, which we'll call $Y^{1}_i$, and $Y_i|D=0$ which we'll call $Y^{0}_i$. These are the so called "potential outcome" because they are both \textit{a priori} observable, but only one can be observed \textit{a posteriori}. Let's introduce a numerical example of a random trial, where we somehow know both potential outcomes :
+Under this model the causal effect of the medicine would be calculated by comparing $Y^{1}_i$ (the world where is administered the medicine), and  $Y^{0}_i$ (the world where the patient is given a placebo). These are the so called "potential outcome" because they are both \textit{a priori} observable, but only one can be observed \textit{a posteriori}. Let's introduce a numerical example of a random trial, where we somehow know both potential outcomes :
 
 \begin{table}[H]
 \centering
@@ -75,7 +75,7 @@ The potential outcome for any unit do not vary with the treatments assigned to o
 \citep{imbens2015causal}
 
 This assumption can be split in two parts, the No interference component and the no hidden variation of treatment components. The former implies that any the potential outcomes for a given observation are independent from treatment of other units, it can be expressed by :
-$$ D_j \perp\!\!\!\perp (Y^{0}_i,Y^{1}_i) \\ \forall i \not = j$$
+$$ D_j \perp\!\!\!\perp (Y^{0}_i,Y^{1}_i) \ \forall i \not = j $$
 For example in the headache situation we excluded \textit{a priori} that each unit treatment wouldn't effect an other, of course this kind of assumption ought to be carefully considered  by an expert on a case by case basis.
 This kind of assumption becomes shaky when we consider time series or pandemics where a unit treatments is very likely to impact the other chances of survival. The problem can be solved in two ways either by having a more suiting \textit{exclusion restriction} or by defining a unit in a broader term, in the vaccination example the unit could be the nation (given no spillover between nations), instead of the individual. 
 The second component instead implies that the treatment is homogeneous in the population, so back the headache example we cant have a medicine that has of different potency or is administered in different ways.
@@ -116,7 +116,7 @@ this assumption is not testable (pag 261 IR)
 From now on we will anther type of distinction between whether our interest is related to the finite sample  or to larger \textit{superpopulation} where the finite sample is drawn from 
 
 \section{Studi randomizzati: Ruolo della randomizzazione}
-We often hear about double-blind randomized trials, where some of the patients are given the medicine and the other are given a placebo with neither the doctors nor the patients aware of who received what. Such trial can be expressed through a DAG in this way: 
+We often hear about double-blind randomized trials, that is where some of the patients are given the medicine and the other are given a placebo with neither the doctors nor the patients being aware of who received what. Such trial can be expressed through a DAG in this way: 
 \begin{figure}[H]
 \centering
 	\begin{tikzpicture}
