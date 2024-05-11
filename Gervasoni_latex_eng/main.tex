@@ -23,7 +23,17 @@
 
 \usepackage{tikz}
 \usetikzlibrary{fit,calc,positioning,shapes,shadows,arrows}
-\tikzset{font={\fontsize{10pt}{12}\selectfont}}
+\tikzset{font={\fontsize{10pt}{12}\selectfont},
+hidden/.style = {
+		draw = black ,
+        shape = circle,
+        inner sep = 11pt
+    },
+controlled/.style = {
+		draw = black ,
+        shape = rectangle,
+        inner sep = 11pt
+    } }
 
 \usepackage{scrextend}
 \usepackage[ruled,norelsize,vlined]{algorithm2e}
@@ -110,19 +120,19 @@
 % (normalmente viene lasciata vuota)
 
 \theoremstyle{definition}
-\newtheorem{assumption}{Assunzione}
+\newtheorem{assumption}{Assumption}
 \numberwithin{assumption}{chapter}
 
 \theoremstyle{definition}
-\newtheorem{definition}{Definizione}
+\newtheorem{definition}{Definition}
 \numberwithin{definition}{chapter}
 
 \theoremstyle{remark}
-\newtheorem{example}{Esempio}
+\newtheorem{example}{Example}
 \numberwithin{example}{chapter}
 
 \theoremstyle{remark}
-\newtheorem{remark}{Nota}
+\newtheorem{remark}{Remark}
 \numberwithin{remark}{chapter}
 
 

@@ -1,9 +1,9 @@
 \chapter{DAGs}
 \label{chapt:DAGs}
-Let's introduce the DAGs or Directed Acyclic Graph, we will need this powerful tool to model causal relationships that wont be properly defined until chapter \ref{chapt:PotentialOM}.
-A DAG is a graph that represents the set of random variables $ V = (V_1,..., V_m)$ as nodes and the casual connection between them as edges. It's called "Directed" because the graph can't form loops so it's not suited to describe simultaneous reciprocal causal relationships or feedback loop, such as: $A \leftrightarrow B $, even if some extension of the model allow this kind of interaction, it is advised not to use this kinds of graphs \citep{cunningham2021causal}.
+Let's start by introducing the DAGs or Directed Acyclic Graph, we will need this powerful tool to model causal relationships that wont be properly defined until chapter \ref{chapt:PotentialOM}.
+A DAG is a graph that represents the set of random variables $ V = (V_1,..., V_m)$ as nodes and the casual connection between them as edges. It's called "Directed" because the graph can't form loops so in its simplest form it isn't suited to describe reciprocal causal relationships or feedback loops, such as: $A \leftrightarrow B $. We will explore some extension of the model that allow for this kind of interaction (see chapter est-temp), but for now we will stick to easier examples.
 
-show examples of valid and invalid dags
+[show examples of valid and invalid dags?]
 
 
 
@@ -47,7 +47,7 @@ show examples of valid and invalid dags
 
 
 \section{Nodes and Edges}
-In this section we will show examples of a DAGs where C is the variable of interest or \textit{outcome} variable for a statistical analysis (years lived after surgery). A is the exposure variable or the variable for which we want to identify the causal effect on the \textit{outcome} variable. We do this to introduce terminology necessary to describe properties of this model.
+In this section we will show examples of a DAGs where Y is the variable of interest or \textit{outcome} variable for a statistical analysis (e.g. number of years lived). D (e.g. surgery status) is the exposure variable or the variable for which we want to identify the causal effect on the \textit{outcome} variable . We do this to introduce terminology necessary to describe properties of this model.
 \subsection{Nodes}
 
 \subsubsection{Descendants Ancestors Parents and Child}
@@ -56,41 +56,53 @@ We call parents (denoted as $PA_m$) the set of causal variables that have a dire
 \begin{figure}[H]
 \centering    
 	\begin{tikzpicture}
-		\node (A) at (0,0) {$A$};
-    		\node (B) at (0,1) {$B$};
-    		\node (C) at (0,2) {$C$};
-    		\node (D) at (0,3) {$D$};
-    		\node (E) at (0,4) {$E$};
-		\path[->] (A) edge (B);
-    		\path[->] (B) edge (C);
-    		\path[->] (C) edge (D);s
-    		\path[->] (D) edge (E);
+		\node (D) at (1,0) {$D$};
+    		\node (B) at (2,0) {$B$};
+    		\node (X) at (2,1) {$X$};
+    		\node (Y) at (3,0) {$Y$};
+    		\node (A) at (4,0) {$A$};
+    		\node (E) at (5,0) {$E$};
+		\path[->] (D) edge (B);
+    		\path[->] (B) edge (Y);
+    		\path[->] (Y) edge (A);
+    		\path[->] (A) edge (E);
+    		\path[->] (X) edge (Y);
 	\end{tikzpicture}
 \caption{DAG: Common effect}
 \label{DAG:term}
 \end{figure}
 
-In the DAG \ref{DAG:term} for C : 
+In the DAG \ref{DAG:term} for Y : 
 \begin{itemize}
-\item {A, B} are it's ancestors
-\item {B} is it's parent
-\item {D, E} are it's descendants
-\item {D} is it's child
+\item {D,B,X} are its ancestors
+\item {B,X} are its parent
+\item {A, E} are its descendants
+\item {A} is its child
 \end{itemize}
-Note that {A, B} are only C's ancestors not is descendants because the directed arrow goes from {A , B} to C. 
-We can say from this graph that A caused B that caused C and so on, so by the graph we understand that the treatment had an effect on the health of at least one individual that was \textit{mediated} through B.
-
+Note that {D,B,X} are Y's ancestors but not its descendants because the directed path goes from {D,B,X} to Y and not the other way around. 
+We can say from this graph that D caused B that caused Y and so on, so by the graph we understand that the treatment had an effect on the health of at least one individual that was \textit{mediated} through B.
 \subsubsection{Mediators , Common effects , Common causes }
-Let's focus on B and all the possible connection between B and A and C:
+Let's focus on B and all the possible connection between it, D and Y:
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\node (D) at (0,0) {$D$};
+    		\node (B) at (1,1) {$B$};
+    		\node (Y) at (2,0) {$Y$};
+    		\path[->] (D) edge (B);
+    		\path[->] (B) edge (Y);
+	\end{tikzpicture}
+\caption{DAG: Mediator}
+\label{DAG:Mediator}
+\end{figure} 
 \begin{figure}[H]
 \centering    
 	\begin{tikzpicture}
-		\node (A) at (0,0) {$A$};
+		\node (D) at (0,0) {$D$};
     		\node (B) at (1,1) {$B$};
-    		\node (C) at (2,0) {$C$};
-		\path[->] (A) edge (B);
-    		\path[<-] (B) edge (C);
-    		\path[->] (A) edge (C);
+    		\node (Y) at (2,0) {$Y$};
+		\path[->] (D) edge (B);
+    		\path[<-] (B) edge (Y);
 	\end{tikzpicture}
 \caption{DAG: Common effect}
 \label{DAG:Common effect}
@@ -98,34 +110,19 @@ Let's focus on B and all the possible connection between B and A and C:
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
-		\node (A) at (0,0) {$A$};
+		\node (D) at (0,0) {$D$};
     		\node (B) at (1,1) {$B$};
-    		\node (C) at (2,0) {$C$};
-    		\path[->] (A) edge (B);
-    		\path[->] (B) edge (C);
-		\path[->] (A) edge (C);
-	\end{tikzpicture}
-\caption{DAG: Mediator}
-\label{DAG:Mediator}
-\end{figure} 
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\node (A) at (0,0) {$A$};
-    		\node (B) at (1,1) {$B$};
-    		\node (C) at (2,0) {$C$};
-    		\path[<-] (A) edge (B);
-    		\path[->] (B) edge (C);
-    		\path[->] (A) edge (C);
+    		\node (Y) at (2,0) {$Y$};
+    		\path[<-] (D) edge (B);
+    		\path[->] (B) edge (Y);
 	\end{tikzpicture}
 \caption{DAG: Common cause}
 \label{DAG:Common cause}
 \end{figure}
-In the graph \ref{DAG:Common effect} B is a common effect of the surgery and the health of the patient, these kind of nodes are called \textit{colliders}.  It has to be noted though that in the graph we don't have any information about the nature of the interaction of the two causes or the strength of the causal relationship.
-In the graph \ref{DAG:Mediator} B is the mediator, for witch the causal effect passes through, in this example let B be the presence of tumour and let's say that all operation A remove successfully the tumour the causal effect of the operation is mediated by the presence of the tumor itself. As a general rule if the mediator's descendants don't have has a common cause the \textit{exposure} and the \textit{outcome}, mediators can be ignored, the reason for this will be fully explained later.
-Meanwhile in the graph \ref{DAG:Common effect} B is the common cause of both the \textit{exposure} and the \textit{outcome}, for example B could be inflammation and this both caused people to opt in for the surgery and is the cause of a faster death, we can see that this kind of relationship is the most problematic because any association between better health is \textit{spurious}, this kinds of nodes are called \textit{confounders}.
-
-%
+In the graph \ref{DAG:Common effect} B is a common effect of the surgery and the health of the patient; these kind of nodes are called \textit{colliders}.  It has to be noted though that in the graph we don't have any information about the nature of the interaction of the two causes or the strength of the causal relationship.
+In the graph \ref{DAG:Mediator} B is the mediator, for witch the causal effect passes through, in this example let B be the presence of tumour and D the operation that removes it, the causal effect of the operation is mediated by the presence of the tumour itself. 
+%As a general rule if the mediator's descendants don't have has a common cause the \textit{exposure} and the \textit{outcome}, mediators can be ignored, the reason for this will be fully explained later.
+Meanwhile in the graph \ref{DAG:Common effect} B is the common cause of both the \textit{exposure} and the \textit{outcome}, for example B could be inflammation and this both caused people to opt in for the surgery and is the cause of a faster death. We can see that this kind of relationship is the most problematic because any association between better health and the operation status is systematically \textit{spurious}; this kinds of nodes are called \textit{confounders}.
 %Infatti se volessimo quantificare la relazione causale tra A e C quando B è un \textit{non collider} o  un \textit{confounder} risulta più difficoltoso perchè sappiamo che B introduce  sistematicamente correlazioni spurie tra A e C (bisogna capire meglio come affrontare i mediators [bisogna controllarli?], osservazione più giusta per i ). Invece nel caso mostrato in figura \ref{DAG:Common effect} potremmo interpretare il $\hat{\delta}$ della regressione lineare:
 %\begin{equation}
 %C_i= A_i\delta + \epsilon_i
@@ -135,26 +132,116 @@ Meanwhile in the graph \ref{DAG:Common effect} B is the common cause of both the
 %\item il grafo soddisfa \textit{Backdoor criterion} ( paragrafo \ref{sect:backdoor})
 %\item La direzione della causalità è corretta
 %\end{itemize}
+%sempre da ramsey
+%Given a path p in a DAG, a nonendpoint vertex V on p is called a collider if the two
+%edges incident to V on p are both into V (→ V ←),
+%otherwise V is called a non-collider on p.
 \subsection{Edges}
-To make any further progress with causal inference it is necessary to outline some assumption  \citep{hernan2020causal}: 
+Let's start by defining an important term that will be frequently mentioned:
+[should i define path and directed path too ?]
+\begin{definition}[Backdoor Path]
+A backdoor path from variable X to Y is any path from X to Y that starts with an arrow pointing to X
+\end{definition}
+To make any further progress with causal inference it is necessary to outline some assumptions, and especially what makes a DAG \textit{causal} is the following \citep{hernan2020causal}: 
 \begin{ass}[Markov assumption]
 We define the distribution of V to be Markov with respect to a DAG G (equivalently, the distribution factors according to a DAG G) if, for each j, $V_j$ is independent of its non-descendants conditional on its parent.
+Or equivalently, given that V is the set of random variables:
+\begin{equation}
+f(v) = \prod_{j=i}^M f(v_j|PA_j) 
+\end{equation}
 \end{ass}
-This may seem an innocuous assumption but it is a very strong one, because it means that for two variable $V_j$ $V_m$ if there isn't a directed edge between the two then $V_j \perp\!\!\!\perp V_m | (PA_j, PA_m)$.
-We can show this as $V_j \perp\!\!\!\perp _G V_m | (PA_j, PA_m) \rightarrow V_j \perp\!\!\!\perp _G V_m | (PA_j, PA_m)$.
-
- It's the analyst burden to assert on a case to case basis that this condition  is indeed credible.
-Another 
-
-
-definizione di open backdoor 
-
-elenco di tutte le path possibili  con esempio
-
-
-
-
-% magari metterli di fianco
+\label{ass:Markov}
+This may seem like an innocuous assumption but it is a very strong one, because it means that for any two variable $V_j$ $V_m$ for witch there isn't a directed edge between the two, then $V_j \perp\!\!\!\perp V_m | (PA_j, PA_m)$. This leads us to state 3 properties of a causal DAG \citep{hernan2020causal}:
+\begin{itemize}
+\item The lack of a directed arrow from node $V_j$ to $V_m$ can be interpreted as a lack of causal relationship 
+\item Every common cause has to be present on the graph 
+\item Any variable is cause of its descendants 
+\end{itemize}
+%We will use this symbol $\perp\!\!\!\perp _G$ to say that two variable aren't connected . the independence $V_j \perp\!\!\!\perp _G V_m | PA_j \rightarrow V_j \perp\!\!\!\perp _G V_m | PA_j $.
+It's the analyst burden to assert, on a case to case basis, that this condition is indeed credible. If it isn't credible, the problem at hand is often intractable, and a new DAG or new measurements have to be made.
+The last assumption is similar to the previous one but the direction of the implication is the opposite  \citep{ramsey2012adjacency}: 
+\begin{ass}[Faithfulness]
+Given a set of variables whose causal structure can be represented by a
+DAG, no conditional independence holds unless entailed by Markov Assumption.
+\end{ass}
+\label{ass:Faith}
+This simply means that any independence between variables is due to arise from structure rather than coincidence.
+To have a clearer picture of this last assumption, we construct an example where faithfulness \textbf{doesn't} hold. It's known that $D \perp\!\!\!\perp Y$ but the causal DAG that represents the relationship between the two variable is the following:
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\node (D) at (0,1) {$D$};
+    		\node (UO) at (1,2) {$U_1$};
+    		\node (Y) at (2,1) {$Y$};
+    		\node (UT) at (1,0) {$U_2$};
+    		\path[->] (D) edge (UO);
+    		\path[->] (D) edge (UT);
+    		\path[->] (UT) edge (Y);
+    		\path[->] (UO) edge (Y);
+	\end{tikzpicture}
+\caption{DAG:faithfulness}
+\label{DAG:faithfulness}
+\end{figure}
+The independence holds if both causal path exactly counteract each other. Needless to say that this kind of occurrence is exceedingly unlikely.
+\section{Conditional independence}
+Let's revisit the DAG \ref{DAG:Mediator}, we can see that the surgery is correlated to years lived, but the casual path is mediated by the presence of the tumour. A legitimate question one could ask is: if we already have information on B (status of the tumour) does D give us further information? To answer this kind of question we have to control for B, in this case we can restrict the analysis to either one group (B=0, B=1). We represent this restriction by drawing a box around the variable we wish to condition upon. 
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+		\node (D) at (1,0) {$D$};
+    		\node (B)[controlled] (B) at (2,0) {$B$};
+    		\node (Y) at (3,0) {$Y$};
+    		\path[->] (D) edge (B);
+    		\path[->] (B) edge (Y);
+\end{tikzpicture}
+\end{figure}
+We know from assumption \ref{ass:Markov} that any variable in the graph G is independent from any other variable conditioned on its parents, so in this graph we have that $Y \perp\!\!\!\perp D | B$. The result is reasonable  because in this example life expectancy depends directly only on the presence of the tumour, and weather or not the operation was made is entirely irrelevant. 
+Conditioning on common effects bears different results, let B the mood of the family (B=0 if sad, B=1 if sad), in this example let's say that the operation has no effect on life expectancy. We can represent this examples with this DAG:
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+		\node (D) at (1,0) {$D$};
+    		\node (B)[controlled] (B) at (2,0) {$B$};
+    		\node (Y) at (3,0) {$Y$};
+    		\path[->] (D) edge (B);
+    		\path[<-] (B) edge (Y);
+\end{tikzpicture}
+\end{figure}
+Let's say that both D and Y have positive effects on B, now if we restrict the analysis on B=0, we will see that patient that are not treated have a low life expectancy, meanwhile in the B=1 we will have patient that are treated and have a higher life expectancy, this is indeed problematic because if we had not controlled for B, D and Y would have been independent. Even though this is just an example, it is proven (citation needed?) that controlling for a collider, or one of it's descendants introduces spurious systematic correlation. Epidemiologist refer to this spurious correlation as \textit{selection bias under the null}. When we condition on a common effect we open the flow of association through the graph.
+As we have seen earlier common causes, like DAG \ref{DAG:Common cause}, produce systematic bias that we will refer to as \textit{confounding bias}. Now let B be inflammation status that both causes lower life expectancy (Y) and a higher chance of being operated (D). 
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\node (D) at (0,0) {$D$};
+    		\node (B)[controlled] at (1,1) {$B$};
+    		\node (Y) at (2,0) {$Y$};
+    		\path[<-] (D) edge (B);
+    		\path[->] (B) edge (Y);
+	\end{tikzpicture}
+\end{figure}
+Let's imagine restricting the analysis to B = 1 (inflammation present), we can clearly see that a lower life expectancy doesn't tell us any new information on the chance of being operated. 
+We can also deduce this by applying the Markov assumption that tells us that $D \perp\!\!\!\perp Y|B$, since B is the parent of both Y and D. When we condition on a common cause we close the flow of association through the graph.
+% grafico strano 
+%\begin{figure}
+%	\caption{Graph 1}
+%	\large{\begin{tikzpicture}[%
+%		->,
+%		>=stealth,
+%		node distance=1cm,
+%		pil/.style={
+%			->,
+%			thick,
+%			shorten =2pt,}
+%		]
+%		\node (1) {Y};
+%		\node[left=of 1] (2) {A};
+%		\node[right=of 1] (3) {L};
+%		\draw [->] (1.east) -- (3.west);
+%		\draw [->] (2) to [out=30, in=150] (3);
+%	\end{tikzpicture}}
+%\end{figure}
+%grafici validi e non validi 
+% magari metterli di fianco 
 %\begin{figure}[ht]
 %  \subcaptionbox{First subfigure}[.22\linewidth]{%
 %	\begin{tikzpicture}
@@ -189,23 +276,83 @@ elenco di tutte le path possibili  con esempio
 
 \section{Back door criterion}
 \label{sect:backdoor}
-
-
-\section{Collider Bias}
+If we want to be able to tell weather a casual effect is identifiable we have to satisfy the \textit{backdoor criterium}. We satisfy this criterium if and only if all back-door paths are blocked i.e. if all non direct flow of association are blocked and we don't condition on a descendant of the exposure [citation needed for the last part].
+We can define a path to be blocked or open by these graphical rules \citep{hernan2020causal}:
+\begin{enumerate}
+\item if there are no variables being conditioned on, a path is blocked if and only if there is a collider
+\item Any path that contains a non-collider that has been conditioned on is blocked. 
+\item A collider that has been conditioned on does not block a path. 
+\item A collider that has a descendant that has been conditioned on does not block a path. 
+\end{enumerate}
+Let's make this rules clearer by applying them to a few examples: 
+Ex1. [should I expand every example with a story]
 \begin{figure}[H]
 \centering
 	\begin{tikzpicture}
-		\node (A) at (0,0) {$A$};
-    		\node (B) at (1,1) {$B$};
-    		\node (C) at (2,0) {$C$};
-		\path[->] (A) edge (B);
-    		\path[<-] (B) edge (C);
-    		\path[->] (A) edge (C);
+		\node (D) {$D$} ;
+		\node (B) [right = of D] {$B$};
+    		\node (Y) [right = of B] {$Y$};
+    		\node (A) [above = of B] {$A$};
+    		\node (C) [below = of B] {$C$};
+		\node (E) [below = of Y] {$E$};
+		\path[->] (D) edge (A);
+    		\path[->] (B) edge (Y);
+    		\path[->] (B) edge (A);
+		\path[->] (A) edge (Y);
+		\path[<-] (D) edge (C);
+		\path[->] (C) edge (E);
+		\path[->] (Y) edge (E);
 	\end{tikzpicture}
-\caption{DAG:collider bias}
-\label{DAG:Colliderbias}
 \end{figure} 
+Let's list all paths from our intervention D to Y : we have  $D \rightarrow A \rightarrow Y$ and $D \rightarrow A \leftarrow B \rightarrow Y $  these two are not back-door paths, so we don't have to control for anything to avoid modifying the main causal path. The only back-door path we need to worry about is $D \leftarrow C \rightarrow E \leftarrow Y $, we see from graphical rule number 1, that a path is closed if there is a collider that in this case is $E$. We can see than that we don't have to control for anything; the causal effect is identifiable. 
+Example n.2 
+\begin{figure}[H]
+\centering
+	\begin{tikzpicture}
+		\node (D) {$D$};
+		\node (A) [above right = of D] {$A$};
+    		\node (C) [right = of A] {$C$};
+    		\node (Y) [below right = of C] {$Y$};
+    		\node (B) [right = of D] {$B$};
+		\path[<-] (D) edge (A);
+    		\path[->] (A) edge (C);
+    		\path[->] (C) edge (Y);
+		\path[->] (D) edge (B);
+		\path[->] (Y) edge (B);
+	\end{tikzpicture}
+\end{figure} 
+Here we have two paths $D \rightarrow B \leftarrow Y $ and a backdoor path witch is $D \leftarrow A \rightarrow C  \rightarrow Y$. We ought not to condition on B because it's a common cause and would introduce spurious correlation; meanwhile we should condition on A since is a common cause of $D$ and $G$. The resulting DAG would be:
+\begin{figure}[H]
+\centering
+	\begin{tikzpicture}
+		\node (D) {$D$};
+		\node (A)[controlled] [above right = of D] {$A$};
+    		\node (C) [right = of A] {$C$};
+    		\node (Y) [below right = of C] {$Y$};
+    		\node (B) [below = of A] {$B$};
+		\path[<-] (D) edge (A);
+    		\path[->] (A) edge (C);
+    		\path[->] (C) edge (Y);
+		\path[->] (D) edge (B);
+		\path[->] (Y) edge (B);
+	\end{tikzpicture}
+\end{figure} 
+Once we followed all the rules and no paths the causal effect will be identifiable and any systematic correlation between exposure and outcome can be interpreted as the causal effect $D_i$ has on $Y_i$.
 
-
-
-Markov assumption
+%
+%\begin{figure}[H]
+%\centering
+%	\begin{tikzpicture}
+%		\node (D) {$D$} ;
+%		\node (Y) [right = of D] {$Y$};
+%    		\node (B) [below = of D] {$B$};
+%    		\node (A) [right = of B] {$A$};
+%		\path[->] (D) edge (Y);
+%    		\path[->] (D) edge (B);
+%    		\path[->] (B) edge (Y);
+%		\path[->] (A) edge (B);
+%		\path[->] (A) edge (Y);
+%	\end{tikzpicture}
+%\end{figure} 
+%
+%
